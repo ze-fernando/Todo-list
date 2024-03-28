@@ -6,6 +6,6 @@ from user.models import User
 class Task(models.Model):
     name = models.CharField(max_length=25)
     done = models.BooleanField()
-    created_at = models.DateField(default=datetime.now())
+    created_at = models.DateField(default=datetime.now)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
