@@ -9,5 +9,6 @@ class TaskSerializer(serializers.ModelSerializer):
         fields = [
             'name',
             'created_at',
+            'done',
             'user'
         ]
