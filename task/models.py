@@ -1,11 +1,9 @@
 from django.db import models
-from datetime import datetime
 from user.models import User
 
 
 class Task(models.Model):
     name = models.CharField(max_length=25)
-    done = models.BooleanField()
-    created_at = models.DateField(default=datetime.now)
+    done = models.BooleanField(default=False)
+    created_at = models.DateField(auto_now_add=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-
