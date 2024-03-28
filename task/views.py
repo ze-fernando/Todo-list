@@ -3,8 +3,7 @@ from rest_framework.response import Response
 from rest_framework import authentication, permissions
 
 
-class TaskListView(APIView):
-    
+class TaskList(APIView):
     def get(self):
         ...
 
@@ -14,7 +13,7 @@ class TaskListView(APIView):
 
 
 
-class TaskDetailView(APIView):
+class TaskDetail(APIView):
     
     def get(self, id):
         ...
