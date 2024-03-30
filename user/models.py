@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, UserManager
 
+
 class User(AbstractBaseUser):
 
     user_name = models.TextField()
@@ -11,6 +12,4 @@ class User(AbstractBaseUser):
 
     last_login = None
 
-
     USERNAME_FIELD = 'id'
-
