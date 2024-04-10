@@ -1,8 +1,10 @@
+from django.contrib.auth.models import make_password
 from django.http import JsonResponse
 from rest_framework.views import APIView
 from django.contrib.auth import authenticate
 from rest_framework_simplejwt.tokens import RefreshToken
 from .models import User
+from .serializers import UserSerializer
 
 
 class UserLogin(APIView):
@@ -16,12 +18,12 @@ class UserLogin(APIView):
         if user:
             refresh = RefreshToken.for_user(user)
             return JsonResponse({
-                'refresh': str(refresh)
+                'token': str(refresh.access_token)
             })
 
         return JsonResponse({
             'message': 'User not found'
-        }, status=404)
+        }, status=401)
 
 
 class UserCreate(APIView):
@@ -36,7 +38,7 @@ class UserCreate(APIView):
             }, status=400)
 
         new_user = User.objects.create(**data)  # nao salva senha haseada
+        new_user.password = make_password(data['password'])
         new_user.save()
-        return JsonResponse({
-            'message': 'user created successfully'  # temporario
-        })
+        serializer = UserSerializer(new_user)
+        return JsonResponse(serializer.data, safe=True, status=201)
