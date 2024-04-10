@@ -6,9 +6,4 @@ from task.models import Task
 class TaskSerializer(serializers.ModelSerializer):
     class Meta:
         model = Task
-        fields = [
-            'name',
-            'created_at',
-            'done',
-            'user'
-        ]
+        fields = '__all__'
