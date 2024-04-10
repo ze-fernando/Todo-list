@@ -25,8 +25,6 @@ class TaskList(APIView):
 
         return JsonResponse(serializer.errors, status=400)
 
-#    return JsonResponse({'message': 'Unauthorized'}, status=401)
-
 
 class TaskDetail(APIView):
     permission_classes = [IsAuthenticated]
