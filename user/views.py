@@ -19,7 +19,7 @@ class UserLogin(APIView):
             refresh = RefreshToken.for_user(user)
             return JsonResponse({
                 'token': str(refresh.access_token)
-            })
+            }, status=200)
 
         return JsonResponse({
             'message': 'User not found'
