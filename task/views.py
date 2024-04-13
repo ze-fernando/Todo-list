@@ -21,7 +21,7 @@ class TaskList(APIView):
 
         if serializer.is_valid():
             serializer.save()
-            return JsonResponse(serializer.data, safe=False)
+            return JsonResponse(serializer.data, safe=False, status=201)
 
         return JsonResponse(serializer.errors, status=400)
 
@@ -35,7 +35,7 @@ class TaskDetail(APIView):
             serializer = TaskSerializer(task)
             return JsonResponse(serializer.data)
         except Task.DoesNotExist:
-            return HttpResponse({'message': 'user id not found'}, status=404)
+            return JsonResponse({'message': 'task id not found'}, status=404)
 
     def put(self, req, id):
         try:
@@ -50,7 +50,7 @@ class TaskDetail(APIView):
             return JsonResponse(serializer.errors, status=400)
 
         except Task.DoesNotExist:
-            return HttpResponse({'message': 'user id not found'}, status=404)
+            return JsonResponse({'message': 'task id not found'}, status=404)
 
     def delete(self, req, id):
         try:
@@ -58,4 +58,4 @@ class TaskDetail(APIView):
             task.delete()
             return JsonResponse({'message': 'task deleted'}, status=204)
         except Task.DoesNotExist:
-            return HttpResponse({'message': 'user id not found'}, status=404)
+            return JsonResponse({'message': 'task id not found'}, status=404)
