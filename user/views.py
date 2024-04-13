@@ -37,7 +37,7 @@ class UserCreate(APIView):
                 'error': 'username already exists'
             }, status=400)
 
-        new_user = User.objects.create(**data)  # nao salva senha haseada
+        new_user = User.objects.create(**data)
         new_user.password = make_password(data['password'])
         new_user.save()
         serializer = UserSerializer(new_user)
