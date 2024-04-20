@@ -1,7 +1,7 @@
 from rest_framework.views import APIView
 from rest_framework.parsers import JSONParser
 from rest_framework.permissions import IsAuthenticated
-from django.http import JsonResponse, HttpResponse
+from django.http import JsonResponse
 
 from task.models import Task
 from .serializers import TaskSerializer
@@ -10,8 +10,9 @@ from .serializers import TaskSerializer
 class TaskList(APIView):
     permission_classes = [IsAuthenticated]
 
-    def get(self, request):
-        tasks = Task.objects.all()
+    def get(self, req):
+        user = req.user
+        tasks = Task.objects.filter(user=user)
         serializer = TaskSerializer(tasks, many=True)
         return JsonResponse(serializer.data, safe=False)
 
@@ -30,16 +31,18 @@ class TaskDetail(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, req, id):
+        user = req.user
         try:
-            task = Task.objects.get(id=id)
+            task = Task.objects.filter(user=user).get(id=id)
             serializer = TaskSerializer(task)
             return JsonResponse(serializer.data)
         except Task.DoesNotExist:
             return JsonResponse({'message': 'task id not found'}, status=404)
 
     def put(self, req, id):
+        user = req.user
         try:
-            task = Task.objects.get(id=id)
+            task = Task.objects.filter(user=user).get(id=id)
             data = JSONParser().parse(req)
             serializer = TaskSerializer(task, data=data)
 
@@ -53,8 +56,9 @@ class TaskDetail(APIView):
             return JsonResponse({'message': 'task id not found'}, status=404)
 
     def delete(self, req, id):
+        user = req.user
         try:
-            task = Task.objects.get(id=id)
+            task = Task.objects.filter(user=user).get(id=id)
             task.delete()
             return JsonResponse({'message': 'task deleted'}, status=204)
         except Task.DoesNotExist:
