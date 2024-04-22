@@ -18,13 +18,15 @@ class TaskList(APIView):
 
     def post(self, req):
         data = JSONParser().parse(req)
-        serializer = TaskSerializer(data=data)
-
-        if serializer.is_valid():
-            serializer.save()
-            return JsonResponse(serializer.data, safe=False, status=201)
-
-        return JsonResponse(serializer.errors, status=400)
+        task = Task(
+            name=data['name'],
+            done=data['done'],
+            user=req.user
+        )
+        serializer = TaskSerializer(task)
+        task.save()
+        print(serializer.data)
+        return JsonResponse(serializer.data, safe=False, status=201)
 
 
 class TaskDetail(APIView):
