@@ -21,7 +21,7 @@ class TaskTest(APITestCase):
 
         self.client.credentials(HTTP_AUTHORIZATION=f'Bearer {access_token}')
 
-    def test_get(self):
+    def test_list(self):
         res = self.client.get(reverse('list'))
 
         self.assertEqual(res.status_code, status.HTTP_200_OK)
@@ -40,7 +40,7 @@ class TaskTest(APITestCase):
     def test_update_sucess(self):
         task = Task.objects.create(
             name='Tarefa Antiga', done=False, user=self.user)
-        data = {'name': 'Nova Tarefa', 'done': True, 'user': self.user.id}
+        data = {'name': 'Nova Tarefa', 'done': True}
         url = reverse('detail', kwargs={'id': task.id})
         res = self.client.put(url, data, format='json')
         self.assertEqual(res.status_code, status.HTTP_200_OK)
@@ -50,7 +50,7 @@ class TaskTest(APITestCase):
     def test_update_fail(self):
         task = Task.objects.create(
             name='Tarefa Antiga', done=False, user=self.user)
-        data = {'name': 'Nova Tarefa', 'done': True}
+        data = {'name': 'Nova Tarefa'}
         url = reverse('detail', kwargs={'id': task.id})
         res = self.client.put(url, data, format='json')
         self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)

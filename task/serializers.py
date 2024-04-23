@@ -4,6 +4,8 @@ from task.models import Task
 
 
 class TaskSerializer(serializers.ModelSerializer):
+    user = serializers.PrimaryKeyRelatedField(read_only=True)
+
     class Meta:
         model = Task
-        fields = ['id', 'name', 'created_at', 'user']
+        fields = ['id', 'name', 'done', 'created_at', 'user']
